@@ -1,0 +1,31 @@
+$colors: (
+        primary: #245e97,
+        secondary: #F8F8F8,
+        third: #242424,
+        dark: #000000,
+        error: #ff0000,
+        success: #008000FF
+);
+
+@each $colorName, $value in $colors {
+  .border-#{$colorName} {
+    border: 1px solid $value;
+  }
+
+  .text-#{$colorName} {
+    color: $value;
+  }
+
+  .btn-#{$colorName} {
+    background-color: $value;
+  }
+
+  .btn-outline-#{$colorName} {
+    border: 1px solid $value;
+    color: $value;
+  }
+
+  .bg-#{$colorName} {
+    background-color: $value;
+  }
+}

@@ -1,0 +1,128 @@
+.gift-vouchers {
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  height: 100%;
+  overflow: hidden;
+
+  &__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 2.4rem;
+    font-weight: 600;
+  }
+
+  &__search {
+    font-size: 1.2rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #3c3c3c;
+    background: #1a1a1a;
+    color: #f8f8f8;
+    width: 20rem;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &::placeholder { color: #555; }
+    &:focus { border-color: #ff7e70; }
+  }
+
+  &__filters {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  &__filter {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #3c3c3c;
+    background: transparent;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover { background: #2e2e2e; }
+
+    &--active {
+      background: #ff7e7022;
+      color: #ff7e70;
+      border-color: #ff7e7044;
+    }
+  }
+
+  &__table-wrap {
+    flex: 1;
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1rem;
+    overflow-y: auto;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.3rem;
+
+    thead tr {
+      border-bottom: 1px solid #2e2e2e;
+      position: sticky;
+      top: 0;
+      background: #1a1a1a;
+      z-index: 1;
+    }
+
+    th {
+      padding: 1rem 1.4rem;
+      text-align: left;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #666;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      padding: 1rem 1.4rem;
+      color: #f8f8f8;
+      border-bottom: 1px solid #2e2e2e;
+    }
+
+    tbody tr {
+      &:last-child td { border-bottom: none; }
+      &:hover td { background: #242424; }
+    }
+  }
+
+  &__status {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+
+    &--valid {
+      background: #00c76422;
+      color: #00c764;
+    }
+
+    &--used {
+      background: #ffffff11;
+      color: #888;
+    }
+
+    &--expired {
+      background: #ff4d4d22;
+      color: #ff4d4d;
+    }
+
+    &--member {
+      background: #8968cd22;
+      color: #8968cd;
+    }
+  }
+}

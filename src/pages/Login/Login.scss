@@ -1,0 +1,155 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__card {
+    background: #242424;
+    border: 1px solid #2e2e2e;
+    border-radius: 1.2rem;
+    padding: 4rem;
+    width: 42rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  &__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #f8f8f8;
+  }
+
+  &__subtitle {
+    font-size: 1.3rem;
+    color: #888;
+    margin: 0;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  &__password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .login__input {
+      width: 100%;
+      padding-right: 4.5rem;
+    }
+  }
+
+  &__eye {
+    position: absolute;
+    right: 1.2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #f8f8f8;
+    }
+  }
+
+  &__label {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #aaa;
+  }
+
+  &__input {
+    background: #1a1a1a;
+    border: 1px solid #3c3c3c;
+    border-radius: 0.8rem;
+    padding: 1rem 1.4rem;
+    font-size: 1.4rem;
+    color: #f8f8f8;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &::placeholder {
+      color: #555;
+    }
+
+    &:focus {
+      border-color: #00b2ff;
+    }
+  }
+
+  &__remember {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+
+    & > input {
+      width: 1.6rem;
+      height: 1.6rem;
+      accent-color: #00b2ff;
+      cursor: pointer;
+    }
+
+    & > label {
+      font-size: 1.3rem;
+      color: #aaa;
+      cursor: pointer;
+    }
+  }
+
+  &__error {
+    font-size: 1.2rem;
+    color: #ff4d4d;
+    background: #ff4d4d11;
+    border: 1px solid #ff4d4d33;
+    border-radius: 0.6rem;
+    padding: 0.8rem 1.2rem;
+    margin: 0;
+  }
+
+  &__submit {
+    background: #00b2ff;
+    color: #fff;
+    border: none;
+    border-radius: 0.8rem;
+    padding: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 0.4rem;
+
+    &:hover {
+      background: #0099dd;
+    }
+
+    &:disabled {
+      background: #2e2e2e;
+      color: #555;
+      cursor: not-allowed;
+    }
+  }
+}

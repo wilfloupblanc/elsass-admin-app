@@ -1,0 +1,271 @@
+.dashboard {
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+  overflow-y: auto;
+
+  &__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 2.4rem;
+    font-weight: 600;
+  }
+
+  &__date {
+    font-size: 1.2rem;
+    color: #888;
+    background: #1a1a1a;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #3c3c3c;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+  }
+
+  &__stat-card {
+    position: relative;
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1rem;
+    padding: 1.4rem 1.6rem 1.4rem 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  &__stat-accent {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.4rem;
+    height: 4rem;
+    border-radius: 0 0.2rem 0.2rem 0;
+  }
+
+  &__stat-label {
+    font-size: 1.1rem;
+    color: #888;
+    margin: 0;
+  }
+
+  &__stat-value {
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: #f8f8f8;
+  }
+
+  &__scanner-cta {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    background: #00b2ff11;
+    border: 1px solid #00b2ff33;
+    border-radius: 1rem;
+    padding: 1.4rem 1.8rem;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover {
+      background: #00b2ff22;
+    }
+  }
+
+  &__scanner-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.8rem;
+    background: #00b2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__scanner-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1;
+  }
+
+  &__scanner-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #00b2ff;
+  }
+
+  &__scanner-sub {
+    font-size: 1.1rem;
+    color: #5aaddb;
+  }
+
+  &__scanner-arrow {
+    font-size: 1.8rem;
+    color: #00b2ff;
+  }
+
+  &__bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+    flex: 1;
+  }
+
+  &__card {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1rem;
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  &__card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  &__card-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #f8f8f8;
+  }
+
+  &__card-link {
+    font-size: 1.2rem;
+    color: #00b2ff;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__booking-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #2e2e2e;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__booking-initials {
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    background: #2e2e2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f8f8f8;
+    flex-shrink: 0;
+  }
+
+  &__booking-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1;
+  }
+
+  &__booking-name {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #f8f8f8;
+  }
+
+  &__booking-detail {
+    font-size: 1.1rem;
+    color: #888;
+  }
+
+  &__status {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+    flex-shrink: 0;
+
+    &--confirmed {
+      background: #00c76422;
+      color: #00c764;
+    }
+
+    &--pending {
+      background: #da750122;
+      color: #da7501;
+    }
+
+    &--cancelled {
+      background: #ff4d4d22;
+      color: #ff4d4d;
+    }
+  }
+
+  &__sim-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #2e2e2e;
+    cursor: pointer;
+    transition: opacity 0.15s;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &__sim-dot {
+    width: 0.8rem;
+    height: 0.8rem;
+    min-width: 0.8rem;
+    min-height: 0.8rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: block;
+
+    &--on { background: #00c764; }
+    &--off { background: #888; }
+  }
+
+  &__sim-name {
+    font-size: 1.3rem;
+    color: #f8f8f8;
+    flex: 1;
+    text-align: center;
+  }
+
+  &__sim-status {
+    font-size: 1.1rem;
+    color: #888;
+    flex-shrink: 0;
+    width: 7rem;
+    text-align: right;
+    display: inline-block;
+  }
+}

@@ -1,0 +1,234 @@
+.users {
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  height: 100%;
+  overflow: hidden;
+
+  &__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 2.4rem;
+    font-weight: 600;
+  }
+
+  &__search {
+    font-size: 1.2rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #3c3c3c;
+    background: #1a1a1a;
+    color: #f8f8f8;
+    width: 20rem;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &::placeholder { color: #555; }
+    &:focus { border-color: #8968cd; }
+  }
+
+  &__filters {
+    display: flex;
+    gap: 0.8rem;
+  }
+
+  &__filter {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #3c3c3c;
+    background: transparent;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover { background: #2e2e2e; }
+
+    &--active {
+      background: #8968cd22;
+      color: #8968cd;
+      border-color: #8968cd44;
+    }
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr 32rem;
+    gap: 1.6rem;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__list {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1rem 1.4rem;
+    border-bottom: 1px solid #2e2e2e;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:last-child { border-bottom: none; }
+    &:hover { background: #242424; }
+
+    &--selected {
+      background: #8968cd22;
+
+      &:hover { background: #8968cd22; }
+    }
+  }
+
+  &__initials {
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 50%;
+    background: #2e2e2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #f8f8f8;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #f8f8f8;
+  }
+
+  &__email {
+    font-size: 1.1rem;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 0.6rem;
+    flex-shrink: 0;
+  }
+
+  &__badge {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.2rem 0.7rem;
+    border-radius: 1rem;
+
+    &--member {
+      background: #8968cd22;
+      color: #8968cd;
+    }
+
+    &--role {
+      background: #ffffff11;
+      color: #888;
+    }
+  }
+
+  &__detail {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    overflow-y: auto;
+  }
+
+  &__detail-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid #2e2e2e;
+  }
+
+  &__detail-avatar {
+    width: 5.6rem;
+    height: 5.6rem;
+    border-radius: 50%;
+    background: #8968cd22;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #8968cd;
+  }
+
+  &__detail-identity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  &__detail-name {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #f8f8f8;
+  }
+
+  &__detail-email {
+    font-size: 1.2rem;
+    color: #888;
+  }
+
+  &__detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  &__detail-section-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #555;
+    letter-spacing: 0.3px;
+    margin-bottom: 0.4rem;
+  }
+
+  &__detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+  }
+
+  &__detail-label {
+    color: #888;
+  }
+
+  &__detail-value {
+    color: #f8f8f8;
+    font-weight: 500;
+  }
+}

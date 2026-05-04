@@ -1,0 +1,235 @@
+.scan {
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+
+  &__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 2.4rem;
+    font-weight: 600;
+  }
+
+  &__pulse-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__pulse {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: #00c764;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  &__pulse-label {
+    font-size: 1.2rem;
+    color: #888;
+  }
+
+  &__body {
+    display: flex;
+    gap: 2.4rem;
+    align-items: flex-start;
+  }
+
+  &__waiting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1rem;
+    padding: 3.2rem 2.4rem;
+    width: 20rem;
+    flex-shrink: 0;
+  }
+
+  &__waiting-label {
+    font-size: 1.2rem;
+    color: #555;
+    text-align: center;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  &__result {
+    flex: 1;
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    padding: 1.8rem;
+  }
+
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    align-self: flex-start;
+
+    &--confirmed {
+      background: #00c76422;
+      color: #00c764;
+    }
+
+    &--pending {
+      background: #da750122;
+      color: #da7501;
+    }
+
+    &--cancelled {
+      background: #ff4d4d22;
+      color: #ff4d4d;
+    }
+
+    &--expired {
+      background: #ff4d4d22;
+      color: #ff4d4d;
+    }
+
+    &--inactive {
+      background: #3c3c3c44;
+      color: #888;
+    }
+  }
+
+  &__status-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  &__pilot-name {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #f8f8f8;
+  }
+
+  &__divider {
+    height: 1px;
+    background: #2e2e2e;
+  }
+
+  &__info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  &__info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  &__info-label {
+    font-size: 1.1rem;
+    color: #555;
+  }
+
+  &__info-value {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #f8f8f8;
+  }
+
+  &__not-found {
+    font-size: 1.4rem;
+    color: #ff4d4d;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  // Check-in réservation
+  &__checkin-btn {
+    align-self: flex-start;
+    background: #00c764;
+    color: #000;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+    &:active {
+      opacity: 0.7;
+    }
+  }
+
+  &__already-checked {
+    font-size: 1.2rem;
+    color: #da7501;
+    background: #da750122;
+    border-radius: 0.6rem;
+    padding: 0.8rem 1.2rem;
+    align-self: flex-start;
+  }
+
+  // Historique
+  &__history {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  &__history-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #555;
+    letter-spacing: 0.3px;
+  }
+
+  &__history-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.2rem;
+    color: #888;
+  }
+
+  &__history-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: #3c3c3c;
+    flex-shrink: 0;
+  }
+
+  &__history-name {
+    flex: 1;
+  }
+
+  &__history-detail {
+    color: #555;
+  }
+}

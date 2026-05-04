@@ -1,0 +1,33 @@
+@use "./mixins" as *;
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  @for $i from 1 through 12 {
+    .col-#{$i} {
+      width: calc($i * 100% / 12);
+    }
+  }
+
+  @for $i from 1 through 12 {
+    @include tablet {
+      .col-tablet-#{$i} {
+        width: calc($i * 100% / 12);
+      }
+    }
+  }
+
+  @for $i from 1 through 12 {
+    @include desktop {
+      .col-desktop-#{$i} {
+        width: calc($i * 100% / 12);
+      }
+    }
+  }
+
+  @include tablet {
+    justify-content: center;
+  }
+}

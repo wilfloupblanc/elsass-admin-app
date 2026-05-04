@@ -1,0 +1,204 @@
+.reservations {
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+  overflow-y: auto;
+
+  &__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.6rem;
+  }
+
+  &__title {
+    font-size: 2.4rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  &__filters {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  &__search {
+    font-size: 1.2rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #3c3c3c;
+    background: #1a1a1a;
+    color: #f8f8f8;
+    width: 18rem;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &::placeholder {
+      color: #555;
+    }
+
+    &:focus {
+      border-color: #00c764;
+    }
+  }
+
+  &__filter {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #3c3c3c;
+    background: transparent;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+      background: #2e2e2e;
+    }
+
+    &--active {
+      background: #00c76422;
+      color: #00c764;
+      border-color: #00c76444;
+    }
+  }
+
+  &__table-wrap {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1rem;
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: calc(100vh - 16rem);
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.3rem;
+
+    thead tr {
+      border-bottom: 1px solid #2e2e2e;
+    }
+
+    th {
+      padding: 1rem 1.4rem;
+      text-align: left;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #666;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      padding: 1rem 1.4rem;
+      color: #f8f8f8;
+      border-bottom: 1px solid #2e2e2e;
+    }
+
+    tbody tr {
+      &:last-child td {
+        border-bottom: none;
+      }
+
+      &:hover td {
+        background: #242424;
+      }
+    }
+  }
+
+  &__pilot {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  &__initials {
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    background: #2e2e2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f8f8f8;
+    flex-shrink: 0;
+  }
+
+  &__pilot-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  &__pilot-name {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #f8f8f8;
+  }
+
+  &__pilot-email {
+    font-size: 1.1rem;
+    color: #888;
+  }
+
+  &__status {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+
+    &--confirmed {
+      background: #00c76422;
+      color: #00c764;
+    }
+
+    &--pending {
+      background: #da750122;
+      color: #da7501;
+    }
+
+    &--cancelled {
+      background: #ff4d4d22;
+      color: #ff4d4d;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  &__btn {
+    font-size: 1.1rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.6rem;
+    border: 1px solid #3c3c3c;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &--cancel {
+      color: #ff4d4d;
+      border-color: #ff4d4d44;
+
+      &:hover {
+        background: #ff4d4d22;
+      }
+    }
+
+    &--restore {
+      color: #00c764;
+      border-color: #00c76444;
+
+      &:hover {
+        background: #00c76422;
+      }
+    }
+  }
+}

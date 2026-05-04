@@ -1,0 +1,64 @@
+{
+  "name": "elsass-admin",
+  "private": true,
+  "version": "0.0.0",
+  "author": {
+    "name": "Julien Zaug",
+    "email": "zaugjulien@gmail.com"
+  },
+  "homepage": "https://elsass-simracing.fr",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && NODE_ENV=development electron . --ozone-platform=x11\"",
+    "build:vite": "vite build",
+    "build:electron": "electron-builder --linux AppImage --publish never",
+    "build": "vite build && DEBUG=electron-builder electron-builder --linux deb --publish never",
+    "lint": "eslint .",
+    "preview": "electron ."
+  },
+  "build": {
+    "appId": "com.elsass-simracing.admin",
+    "productName": "Elsass SimRacing Admin",
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "icons/**"
+    ],
+    "directories": { "output": "release" },
+    "linux": {
+      "target": ["deb"],
+      "icon": "icons/icons/png"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
+    "electron-store": "^8.2.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-redux": "^9.2.0",
+    "react-router": "^7.13.0",
+    "react-router-dom": "^7.13.1",
+    "redux": "^5.0.1",
+    "sass": "^1.97.3",
+    "tailwindcss": "^4.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^9.2.1",
+    "electron": "^41.3.0",
+    "electron-builder": "^26.8.1",
+    "electron-icon-builder": "^2.0.1",
+    "eslint": "^10.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.5.0",
+    "vite": "^8.0.10",
+    "wait-on": "^9.0.5"
+  }
+}
