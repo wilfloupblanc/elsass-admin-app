@@ -9,10 +9,10 @@
   "homepage": "https://elsass-simracing.fr",
   "main": "electron/main.js",
   "scripts": {
-    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && NODE_ENV=development electron . --ozone-platform=x11\"",
+    "dev": "concurrently \"vite --port 5174\" \"wait-on http://localhost:5174 && NODE_ENV=development electron . --ozone-platform=x11\"",
     "build:vite": "vite build",
     "build:electron": "electron-builder --linux AppImage --publish never",
-    "build": "vite build && DEBUG=electron-builder electron-builder --linux deb --publish never",
+    "build": "vite build && DEBUG=electron-builder electron-builder --linux AppImage --win nsis --publish never",
     "lint": "eslint .",
     "preview": "electron ."
   },
@@ -30,7 +30,8 @@
       "icon": "icons/icons/png"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "icons/icons/png/icon.ico"
     }
   },
   "dependencies": {

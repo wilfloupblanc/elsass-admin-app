@@ -5,6 +5,7 @@ import {
     useCreateEventMutation,
     useUpdateEventMutation,
     useDeleteEventMutation,
+    useGetEventRegistrationsQuery,
 } from '../../store/ApiSlice/adminApiSlice'
 
 const VEHICLE_CATEGORIES = [
@@ -12,11 +13,59 @@ const VEHICLE_CATEGORIES = [
     'Formula 2', 'Formula 1', 'Touring Car', 'Rally'
 ]
 
+const EventRegistrationsModal = ({ eventId, eventTitle, onClose }) => {
+    const { data, isLoading } = useGetEventRegistrationsQuery(eventId)
+    const registrations = data?.registrations ?? []
+
+    return (
+        <div className="events__modal-overlay" onClick={onClose}>
+            <div className="events__modal events__modal--wide" onClick={e => e.stopPropagation()}>
+                <h2 className="events__modal-title">Inscriptions — {eventTitle}</h2>
+                {isLoading ? (
+                    <p>Chargement...</p>
+                ) : registrations.length === 0 ? (
+                    <p>Aucune inscription pour cet événement.</p>
+                ) : (
+                    <table className="events__registrations-table">
+                        <thead>
+                        <tr>
+                            <th>Participant</th>
+                            <th>Email</th>
+                            <th>Pilotes</th>
+                            <th>Véhicule</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {registrations.map(r => (
+                            <tr key={r.id}>
+                                <td>{r.firstname} {r.lastname}</td>
+                                <td>{r.email}</td>
+                                <td>{r.pilots}</td>
+                                <td>{r.vehicle ?? '—'}</td>
+                                <td>{r.price_paid?.toFixed(2)} €</td>
+                                <td>{r.status}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                )}
+                <div className="events__modal-actions">
+                    <button className="events__modal-cancel" onClick={onClose}>Fermer</button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export const Events = () => {
     const [filter, setFilter] = useState('all')
     const [showModal, setShowModal] = useState(false)
     const [editingEvent, setEditingEvent] = useState(null)
     const [vehicleInput, setVehicleInput] = useState('')
+    const [bannerPreview, setBannerPreview] = useState(null)
+    const [selectedEventId, setSelectedEventId] = useState(null)
     const [form, setForm] = useState({
         title: '',
         description: '',
@@ -29,6 +78,7 @@ export const Events = () => {
         vehicles: [],
         vehicle_categories: [],
         access: 'all',
+        banner_image: null,
     })
 
     const { data: eventsData } = useGetEventsQuery()
@@ -75,6 +125,7 @@ export const Events = () => {
     const handleOpenCreate = () => {
         setEditingEvent(null)
         setVehicleInput('')
+        setBannerPreview(null)
         setForm({
             title: '',
             description: '',
@@ -87,6 +138,7 @@ export const Events = () => {
             vehicles: [],
             vehicle_categories: [],
             access: 'all',
+            banner_image: null,
         })
         setShowModal(true)
     }
@@ -94,6 +146,7 @@ export const Events = () => {
     const handleOpenEdit = (event) => {
         setEditingEvent(event)
         setVehicleInput('')
+        setBannerPreview(null)
         setForm({
             title: event.title,
             description: event.description ?? '',
@@ -106,8 +159,20 @@ export const Events = () => {
             vehicles: event.vehicles ? JSON.parse(event.vehicles) : [],
             vehicle_categories: event.vehicle_categories ? JSON.parse(event.vehicle_categories) : [],
             access: event.access ?? 'all',
+            banner_image: event.banner_image ?? null,
         })
         setShowModal(true)
+    }
+
+    const handleBannerUpload = (e) => {
+        const file = e.target.files[0]
+        if (!file) return
+        const reader = new FileReader()
+        reader.onloadend = () => {
+            setBannerPreview(reader.result)
+            setForm(prev => ({ ...prev, banner_image: reader.result }))
+        }
+        reader.readAsDataURL(file)
     }
 
     const handleAddVehicle = () => {
@@ -144,6 +209,7 @@ export const Events = () => {
     }
 
     const handleDelete = async (id) => {
+        if (!window.confirm("Supprimer cet événement ? Les inscriptions associées seront également supprimées et les slots restaurés.")) return
         await deleteEvent(id)
     }
 
@@ -165,7 +231,7 @@ export const Events = () => {
         'linear-gradient(135deg,#1a1a2a,#0d0d1d)',
     ]
 
-    const bannerEmojis = ['🏁', '🎮', '🏆', '🎯', '🚀', '⚡']
+    const bannerEmojis = ['🏁', '🏆', '🚗', '⚡', '🔥', '🎯']
 
     return (
         <section className="events">
@@ -200,8 +266,14 @@ export const Events = () => {
                     const categories = event.vehicle_categories ? JSON.parse(event.vehicle_categories) : []
                     return (
                         <div key={event.id} className={`events__card ${status === 'past' ? 'events__card--past' : ''}`}>
-                            <div className="events__banner" style={{ background: bannerColors[i % bannerColors.length] }}>
-                                <span className="events__banner-emoji">{bannerEmojis[i % bannerEmojis.length]}</span>
+                            <div
+                                className="events__banner"
+                                style={{ background: event.banner_image ? 'transparent' : bannerColors[i % bannerColors.length] }}
+                            >
+                                {event.banner_image
+                                    ? <img src={event.banner_image} alt={event.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    : <span className="events__banner-emoji">{bannerEmojis[i % bannerEmojis.length]}</span>
+                                }
                                 <span className="events__date-badge">{formatDate(event.date)}</span>
                             </div>
                             <div className="events__body">
@@ -237,6 +309,9 @@ export const Events = () => {
                                     </span>
                                 </div>
                                 <div className="events__card-actions">
+                                    <button className="events__action-btn" onClick={() => setSelectedEventId(event.id)}>
+                                        Inscriptions
+                                    </button>
                                     <button className="events__action-btn" onClick={() => handleOpenEdit(event)}>
                                         Modifier
                                     </button>
@@ -249,6 +324,14 @@ export const Events = () => {
                     )
                 })}
             </article>
+
+            {selectedEventId && (
+                <EventRegistrationsModal
+                    eventId={selectedEventId}
+                    eventTitle={events.find(e => e.id === selectedEventId)?.title ?? ''}
+                    onClose={() => setSelectedEventId(null)}
+                />
+            )}
 
             {showModal && (
                 <div className="events__modal-overlay" onClick={() => setShowModal(false)}>
@@ -265,6 +348,21 @@ export const Events = () => {
                                     onChange={e => setForm({ ...form, title: e.target.value })}
                                     placeholder="Ex: Championnat SimRacing Alsace"
                                     required
+                                />
+                            </div>
+                            <div className="events__modal-field">
+                                <label>Image de bannière</label>
+                                {(bannerPreview || form.banner_image) && (
+                                    <img
+                                        src={bannerPreview ?? form.banner_image}
+                                        alt="Aperçu bannière"
+                                        style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginBottom: '8px' }}
+                                    />
+                                )}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleBannerUpload}
                                 />
                             </div>
                             <div className="events__modal-field">
@@ -328,7 +426,7 @@ export const Events = () => {
                                         {form.vehicles.map((v, i) => (
                                             <div key={i} className="events__vehicle-tag">
                                                 <span>{v}</span>
-                                                <button type="button" onClick={() => handleRemoveVehicle(i)}>×</button>
+                                                <button type="button" onClick={() => handleRemoveVehicle(i)}>✕</button>
                                             </div>
                                         ))}
                                     </div>

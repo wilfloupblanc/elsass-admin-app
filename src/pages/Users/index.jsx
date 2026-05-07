@@ -69,7 +69,7 @@ export const Users = () => {
             <article className="users__content">
                 <div className="users__list">
                     {filteredUsers.map(user => {
-                        const subscription = getUserSubscription(user.id)
+
                         return (
                             <div
                                 key={user.id}

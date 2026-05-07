@@ -72,3 +72,34 @@
     }
   }
 }
+
+.layout__sidebar__maintenance {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  & > div {
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 0.3rem;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+  }
+
+  & > h3 {
+    font-size: 1.3rem;
+    font-weight: normal;
+    color: #F8F8F8;
+    margin: 1rem 0;
+  }
+
+  &--active > h3 {
+    color: #ef4444;
+  }
+}

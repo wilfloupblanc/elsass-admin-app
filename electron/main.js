@@ -9,14 +9,31 @@ function createWindow() {
         width: 1280,
         height: 800,
         show: false,
-        icon: path.join(__dirname, '../public/iconSite.png'),
+        icon: path.join(__dirname, '../public/icon.png'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false,
+            partition: 'persist:main'
         },
         title: 'Elsass SimRacing - Admin'
     })
+
+    win.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
+        callback({ requestHeaders: { ...details.requestHeaders } })
+    })
+
+    win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+        const headers = { ...details.responseHeaders }
+        if (headers['set-cookie']) {
+            headers['set-cookie'] = headers['set-cookie'].map(cookie =>
+                cookie.replace(/SameSite=None/gi, 'SameSite=Lax')
+                    .replace(/; Secure/gi, '')
+            )
+        }
+        callback({ responseHeaders: headers })
+    })
+
 
     win.once('ready-to-show', () => {
         win.maximize()
@@ -24,7 +41,7 @@ function createWindow() {
     })
 
     if (isDev) {
-        win.loadURL('http://localhost:5173')
+        win.loadURL('http://localhost:5174')
         win.webContents.openDevTools()
     } else {
         win.loadFile(path.join(__dirname, '../dist/index.html'))

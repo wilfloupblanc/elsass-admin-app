@@ -1,8 +1,14 @@
 import "./Sidebar.scss"
 import { NavLink } from "react-router"
 import { PageColors } from "../../PageColors"
+import {useGetMaintenanceStatusQuery, useToggleMaintenanceMutation} from "../../../store/ApiSlice/adminApiSlice";
 
 export const Sidebar = ({ className }) => {
+    const { data } = useGetMaintenanceStatusQuery()
+    const [toggleMaintenance, { data: toggleData }] = useToggleMaintenanceMutation()
+
+    const isMaintenance = toggleData?.maintenance ?? data?.maintenance ?? false
+
     return (
         <aside className={className}>
             <section className="layout__sidebar__title">
@@ -68,6 +74,13 @@ export const Sidebar = ({ className }) => {
                     <div style={{ background: PageColors.scanner }} />
                     <h3>Scanner QR</h3>
                 </NavLink>
+                <button
+                    className={`layout__sidebar__maintenance ${isMaintenance ? "layout__sidebar__maintenance--active" : ""}`}
+                    onClick={() => toggleMaintenance()}
+                >
+                    <div style={{ background: isMaintenance ? "#ef4444" : "#22c55e" }} />
+                    <h3>{isMaintenance ? "Maintenance ON" : "Maintenance OFF"}</h3>
+                </button>
             </section>
         </aside>
     )

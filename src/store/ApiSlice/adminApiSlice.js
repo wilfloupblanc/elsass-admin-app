@@ -8,7 +8,14 @@ export const adminApiSlice = createApi({
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
         },
-        credentials: "include"
+        credentials: "include",
+        prepareHeaders: (headers) => {
+            const token = localStorage.getItem('token')
+            if (token) {
+                headers.set('Authorization', `Bearer ${token}`)
+            }
+            return headers
+        }
     }),
     tagTypes: ["admin"],
     endpoints: build => ({
@@ -145,6 +152,21 @@ export const adminApiSlice = createApi({
             }),
             invalidatesTags: ['admin'],
         }),
+        getEventRegistrations: build.query({
+            query: (eventId) => `/booking/event/${eventId}`,
+            providesTags: ['admin'],
+        }),
+        toggleMaintenance: build.mutation({
+            query: () => ({
+                url: '/setting/maintenance/toggle',
+                method: 'PATCH',
+            }),
+            invalidatesTags: ['admin'],
+        }),
+        getMaintenanceStatus: build.query({
+            query: () => '/setting/maintenance/status',
+            providesTags: ['admin'],
+        }),
     })
 })
 
@@ -172,4 +194,7 @@ export const {
     useDeleteEventMutation,
     useCheckInBookingMutation,
     useValidateFreeSessionTokenMutation,
+    useGetEventRegistrationsQuery,
+    useToggleMaintenanceMutation,
+    useGetMaintenanceStatusQuery,
 } = adminApiSlice

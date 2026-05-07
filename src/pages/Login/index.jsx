@@ -28,6 +28,7 @@ export const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            const result = await signIn({ email, password }).unwrap()
             await signIn({ email, password }).unwrap()
 
             if (rememberMe) {
@@ -35,6 +36,8 @@ export const Login = () => {
             } else {
                 await window.electronAPI.clearCredentials()
             }
+
+            localStorage.setItem('token', result.token)
 
             await refetch()
             navigate('/')
