@@ -259,8 +259,8 @@
       color: #00b2ff;
     }
     &--available {
-      background: #da750122;
-      color: #da7501;
+      background: #00c76422;
+      color: #00c764;
     }
   }
 
@@ -276,6 +276,10 @@
     &--cancelled {
       background: #ffffff11;
       color: #888;
+    }
+    &--pending {
+      background: #f59e0b22;
+      color: #f59e0b;
     }
   }
 }

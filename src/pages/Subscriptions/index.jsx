@@ -23,6 +23,7 @@ export const Subscriptions = () => {
         .filter(s => {
             if (filter === 'active') return s.status === 'active'
             if (filter === 'cancelled') return s.status === 'cancelled'
+            if (filter === 'pending_cancellation') return s.status === 'pending_cancellation'
             if (filter === 'STARTER') return s.plan === 'STARTER' && s.status === 'active'
             if (filter === 'PLUS') return s.plan === 'PLUS' && s.status === 'active'
             if (filter === 'ULTRA') return s.plan === 'ULTRA' && s.status === 'active'
@@ -40,8 +41,12 @@ export const Subscriptions = () => {
 
     const stats = {
         active: activeSubs.length,
-        sessionUsed: activeSubs.filter(s => s.monthly_free_session_used).length,
-        sessionAvailable: activeSubs.filter(s => !s.monthly_free_session_used).length,
+        sessionUsed: subscriptions
+            .filter(s => s.status === 'active' || s.status === 'pending_cancellation')
+            .reduce((acc, s) => acc + (s.monthly_free_session_used ? 1 : 0), 0),
+        sessionAvailable: subscriptions
+            .filter(s => s.status === 'active' || s.status === 'pending_cancellation')
+            .reduce((acc, s) => acc + (s.free_sessions_remaining ?? 0), 0),
         starter: activeSubs.filter(s => s.plan === 'STARTER').length,
         plus: activeSubs.filter(s => s.plan === 'PLUS').length,
         ultra: activeSubs.filter(s => s.plan === 'ULTRA').length,
@@ -72,6 +77,7 @@ export const Subscriptions = () => {
                         {[
                             { key: 'all', label: 'Tous' },
                             { key: 'active', label: 'Actifs' },
+                            { key: 'pending_cancellation', label: 'En cours d\'annulation' },
                             { key: 'cancelled', label: 'Inactifs' },
                             { key: 'STARTER', label: 'Starter' },
                             { key: 'PLUS', label: 'Plus' },
@@ -133,7 +139,7 @@ export const Subscriptions = () => {
                         <th>Plan</th>
                         <th>Abonné depuis</th>
                         <th>Prochain renouvellement</th>
-                        <th>Session offerte</th>
+                        <th>Sessions offertes</th>
                         <th>Statut</th>
                     </tr>
                     </thead>
@@ -162,17 +168,17 @@ export const Subscriptions = () => {
                                         </span>
                                 </td>
                                 <td>{formatDate(sub.current_period_start)}</td>
-                                <td>{sub.status === 'active' ? formatDate(sub.current_period_end) : '—'}</td>
+                                <td>{sub.status === 'active' || sub.status === 'pending_cancellation' ? formatDate(sub.current_period_end) : '?'}</td>
                                 <td>
-                                    {sub.status === 'active' ? (
+                                    {sub.status === 'active' || sub.status === 'pending_cancellation' ? (
                                         <span className={`subscriptions__session ${sub.monthly_free_session_used ? 'subscriptions__session--used' : 'subscriptions__session--available'}`}>
-                                                {sub.monthly_free_session_used ? 'Utilisée' : 'Disponible'}
-                                            </span>
-                                    ) : '—'}
+                                            {sub.monthly_free_session_used ? 'Toutes utilisées' : `${sub.free_sessions_remaining} Disponible`}
+                                        </span>
+                                    ) : '?'}
                                 </td>
                                 <td>
-                                        <span className={`subscriptions__status ${sub.status === 'active' ? 'subscriptions__status--active' : 'subscriptions__status--cancelled'}`}>
-                                            {sub.status === 'active' ? 'Actif' : 'Inactif'}
+                                        <span className={`subscriptions__status subscriptions__status--${sub.status === 'active' ? 'active' : sub.status === 'pending_cancellation' ? 'pending' : 'cancelled'}`}>
+                                            {sub.status === 'active' ? 'Actif' : sub.status === 'pending_cancellation' ? 'Annulation en cours' : 'Inactif'}
                                         </span>
                                 </td>
                             </tr>
