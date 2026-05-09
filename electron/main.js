@@ -65,6 +65,9 @@ app.whenReady().then(() => {
 
     if (!isDev) {
         autoUpdater.checkForUpdates()
+        setInterval(() => {
+            autoUpdater.checkForUpdates()
+        }, 60 * 60 * 1000)
     }
 })
 
