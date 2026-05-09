@@ -1,5 +1,6 @@
 {
   "name": "elsass-admin",
+  "description": "Elsass SimRacing Admin Panel",
   "private": true,
   "version": "1.0.8",
   "author": {
