@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
-const store = require('electron-store')
+const Store = require('electron-store')
+const store = new Store()
 const { autoUpdater } = require('electron-updater')
 const isDev = process.env.NODE_ENV === 'development'
 
