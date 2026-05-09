@@ -167,6 +167,28 @@ export const adminApiSlice = createApi({
             query: () => '/setting/maintenance/status',
             providesTags: ['admin'],
         }),
+        updateSubscriptionSessions: build.mutation({
+            query: ({ id, free_sessions_remaining }) => ({
+                url: `/subscription/${id}/sessions`,
+                method: 'PATCH',
+                body: { free_sessions_remaining }
+            }),
+            invalidatesTags: ['admin'],
+        }),
+        adminCancelBooking: build.mutation({
+            query: (id) => ({
+                url: `/booking/${id}/cancel`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['admin'],
+        }),
+        adminRestoreBooking: build.mutation({
+            query: (id) => ({
+                url: `/booking/${id}/restore`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['admin'],
+        }),
     })
 })
 
@@ -197,4 +219,7 @@ export const {
     useGetEventRegistrationsQuery,
     useToggleMaintenanceMutation,
     useGetMaintenanceStatusQuery,
+    useUpdateSubscriptionSessionsMutation,
+    useAdminCancelBookingMutation,
+    useAdminRestoreBookingMutation
 } = adminApiSlice

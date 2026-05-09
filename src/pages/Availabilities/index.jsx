@@ -23,9 +23,9 @@ const getMonday = (date) => {
 
 const TIME_SLOTS = (() => {
     const slots = []
-    for (let h = 10; h <= 20; h++) {
+    for (let h = 10; h <= 22; h++) {
         for (let m = 0; m < 60; m += 15) {
-            if (h === 20 && m > 15) break
+            if (h === 22 && m > 15) break
             slots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`)
         }
     }
@@ -118,6 +118,7 @@ export const Availabilities = () => {
         if (dayDate < todayDate) return 'availabilities__slot--past'
         if (!slot.is_open) return 'availabilities__slot--closed'
         if (slot.slots_remaining === 0) return 'availabilities__slot--full'
+        if (slot.slots_remaining <= 5) return 'availabilities__slot--low'
         return 'availabilities__slot--open'
     }, [today])
 

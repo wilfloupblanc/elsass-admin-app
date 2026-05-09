@@ -1,0 +1,49 @@
+.update-banner {
+  position: fixed;
+  top: 0;
+  left: 20rem;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  z-index: 1000;
+
+  &--available {
+    background-color: #242424;
+    color: #6b7280;
+    border-top: 1px solid #2e2e2e;
+
+    span::before {
+      content: '⏳ ';
+    }
+  }
+
+  &--downloaded {
+    background-color: #1a2e1f;
+    color: #86efac;
+    border-bottom: 1px solid #166534;
+
+    span::before {
+      content: '✅ ';
+    }
+
+    button {
+      background-color: #166534;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #15803d;
+      }
+    }
+  }
+}

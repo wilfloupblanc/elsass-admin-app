@@ -69,7 +69,7 @@ export const Scan = () => {
     const handleCheckIn = async () => {
         try {
             await checkIn(scannedId).unwrap()
-            refetchBookings()
+            await refetchBookings()
         } catch (error) {
             console.error('Erreur check-in:', error)
         }

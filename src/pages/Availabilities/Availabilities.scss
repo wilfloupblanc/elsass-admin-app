@@ -92,6 +92,7 @@
     border-radius: 0.2rem;
 
     &--open { background: #00c764; }
+    &--low { background: #f59e0b; }
     &--full { background: #ff4d4d; }
     &--closed { background: #555; }
   }
@@ -224,6 +225,12 @@
       background: #33333388;
       color: #555;
       border: 1px solid #2e2e2e;
+    }
+
+    &--low {
+      background: #f59e0b22;
+      color: #f59e0b;
+      border: 1px solid #f59e0b44;
     }
   }
 

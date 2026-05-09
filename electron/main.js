@@ -1,8 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const Store = require('electron-store')
-const store = new Store()
+const { autoUpdater } = require('electron-updater')
 const isDev = process.env.NODE_ENV === 'development'
+
+autoUpdater.autoDownload = true
+autoUpdater.autoInstallOnAppQuit = true
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -22,7 +25,6 @@ function createWindow() {
     win.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
         callback({ requestHeaders: { ...details.requestHeaders } })
     })
-
     win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
         const headers = { ...details.responseHeaders }
         if (headers['set-cookie']) {
@@ -33,7 +35,6 @@ function createWindow() {
         }
         callback({ responseHeaders: headers })
     })
-
 
     win.once('ready-to-show', () => {
         win.maximize()
@@ -46,10 +47,25 @@ function createWindow() {
     } else {
         win.loadFile(path.join(__dirname, '../dist/index.html'))
     }
+
+    // 👈 ajout : events updater → envoyés au renderer
+    autoUpdater.on('update-available', () => {
+        win.webContents.send('update-available')
+    })
+
+    autoUpdater.on('update-downloaded', () => {
+        win.webContents.send('update-downloaded')
+    })
+
+    return win
 }
 
 app.whenReady().then(() => {
     createWindow()
+
+    if (!isDev) {
+        autoUpdater.checkForUpdates()
+    }
 })
 
 app.on('window-all-closed', () => {
@@ -59,11 +75,13 @@ app.on('window-all-closed', () => {
 ipcMain.handle('credentials:get', () => {
     return store.get('savedCredentials') ?? null
 })
-
 ipcMain.handle('credentials:save', (event, credentials) => {
     store.set('savedCredentials', credentials)
 })
-
 ipcMain.handle('credentials:clear', () => {
     store.delete('savedCredentials')
+})
+
+ipcMain.on('install-update', () => {
+    autoUpdater.quitAndInstall()
 })

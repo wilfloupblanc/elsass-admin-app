@@ -5,18 +5,19 @@ import {
     useGetUsersQuery,
     useGetSessionsQuery,
     useGetSimulatorsQuery,
-    useUpdateBookingMutation
+    useAdminCancelBookingMutation, useAdminRestoreBookingMutation
 } from '../../store/ApiSlice/adminApiSlice'
 
 export const Reservations = () => {
     const [search, setSearch] = useState('')
     const [filter, setFilter] = useState('all')
-
     const { data: bookingsData } = useGetBookingsQuery()
     const { data: usersData } = useGetUsersQuery()
     const { data: sessionsData } = useGetSessionsQuery()
     const { data: simulatorsData } = useGetSimulatorsQuery()
-    const [updateBooking] = useUpdateBookingMutation()
+    const [showPast, setShowPast] = useState(false)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
 
     const bookings = bookingsData?.bookings ?? []
     const users = usersData?.users ?? []
@@ -47,6 +48,14 @@ export const Reservations = () => {
         }
     }
 
+    const [adminCancelBooking] = useAdminCancelBookingMutation()
+
+    const handleCancel = async (id) => {
+        await adminCancelBooking(id)
+    }
+
+    const [adminRestoreBooking] = useAdminRestoreBookingMutation()
+
     const filteredBookings = bookings
         .filter(b => {
             if (filter === 'all') return true
@@ -58,11 +67,17 @@ export const Reservations = () => {
             const fullName = user ? `${user.firstname} ${user.lastname}`.toLowerCase() : ''
             return fullName.includes(search.toLowerCase())
         })
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-
-    const handleStatusChange = async (id, status) => {
-        await updateBooking({ id, status })
-    }
+        .filter(b => {
+            const bookingDate = new Date(b.date)
+            bookingDate.setHours(0, 0, 0, 0)
+            return showPast ? bookingDate < today : bookingDate >= today
+        })
+        .sort((a, b) => {
+            if (showPast) return new Date(b.date) - new Date(a.date)
+            const dateDiff = new Date(a.date) - new Date(b.date)
+            if (dateDiff !== 0) return dateDiff
+            return a.start_time.localeCompare(b.start_time)
+        })
 
     return (
         <section className="reservations">
@@ -85,6 +100,14 @@ export const Reservations = () => {
                             {f === 'all' ? 'Tous' : getStatusLabel(f)}
                         </button>
                     ))}
+                    <label className="reservations__toggle">
+                        <input
+                            type="checkbox"
+                            checked={showPast}
+                            onChange={() => setShowPast(!showPast)}
+                        />
+                        Réservations passées
+                    </label>
                 </div>
             </article>
 
@@ -132,7 +155,7 @@ export const Reservations = () => {
                                 <td>{session ? `${session.duration_minutes} min` : '—'}</td>
                                 <td>{simulator ? simulator.name : '—'}</td>
                                 <td>{booking.pilots}</td>
-                                <td>{booking.price_paid} €</td>
+                                <td>{booking.price_paid.toFixed(2)}€</td>
                                 <td>
                                         <span className={`reservations__status ${getStatusClass(booking.status)}`}>
                                             {getStatusLabel(booking.status)}
@@ -143,7 +166,7 @@ export const Reservations = () => {
                                         {booking.status !== 'cancelled' && (
                                             <button
                                                 className="reservations__btn reservations__btn--cancel"
-                                                onClick={() => handleStatusChange(booking.id, 'cancelled')}
+                                                onClick={() => handleCancel(booking.id)}
                                             >
                                                 Annuler
                                             </button>
@@ -151,7 +174,7 @@ export const Reservations = () => {
                                         {booking.status === 'cancelled' && (
                                             <button
                                                 className="reservations__btn reservations__btn--restore"
-                                                onClick={() => handleStatusChange(booking.id, 'confirmed')}
+                                                onClick={() => adminRestoreBooking(booking.id)}
                                             >
                                                 Restaurer
                                             </button>

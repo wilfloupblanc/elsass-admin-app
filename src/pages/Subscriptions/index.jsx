@@ -1,6 +1,10 @@
 import './Subscriptions.scss'
 import { useState } from 'react'
-import { useGetSubscriptionsQuery, useGetUsersQuery } from '../../store/ApiSlice/adminApiSlice'
+import {
+    useGetSubscriptionsQuery,
+    useGetUsersQuery,
+    useUpdateSubscriptionSessionsMutation
+} from '../../store/ApiSlice/adminApiSlice'
 
 export const Subscriptions = () => {
     const [filter, setFilter] = useState('all')
@@ -18,6 +22,8 @@ export const Subscriptions = () => {
         if (!date) return '—'
         return new Date(date).toLocaleDateString('fr-FR', { timeZone: 'Europe/Paris' })
     }
+
+    const [updateSessions] = useUpdateSubscriptionSessionsMutation()
 
     const filteredSubscriptions = subscriptions
         .filter(s => {
@@ -171,15 +177,19 @@ export const Subscriptions = () => {
                                 <td>{sub.status === 'active' || sub.status === 'pending_cancellation' ? formatDate(sub.current_period_end) : '?'}</td>
                                 <td>
                                     {sub.status === 'active' || sub.status === 'pending_cancellation' ? (
-                                        <span className={`subscriptions__session ${sub.monthly_free_session_used ? 'subscriptions__session--used' : 'subscriptions__session--available'}`}>
-                                            {sub.monthly_free_session_used ? 'Toutes utilisées' : `${sub.free_sessions_remaining} Disponible`}
-                                        </span>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={sub.free_sessions_remaining}
+                                            onChange={(e) => updateSessions({ id: sub.id, free_sessions_remaining: Number(e.target.value) })}
+                                            className="subscriptions__sessions-input"
+                                        />
                                     ) : '?'}
                                 </td>
                                 <td>
-                                        <span className={`subscriptions__status subscriptions__status--${sub.status === 'active' ? 'active' : sub.status === 'pending_cancellation' ? 'pending' : 'cancelled'}`}>
-                                            {sub.status === 'active' ? 'Actif' : sub.status === 'pending_cancellation' ? 'Annulation en cours' : 'Inactif'}
-                                        </span>
+                                    <span className={`subscriptions__status subscriptions__status--${sub.status === 'active' ? 'active' : sub.status === 'pending_cancellation' ? 'pending' : 'cancelled'}`}>
+                                        {sub.status === 'active' ? 'Actif' : sub.status === 'pending_cancellation' ? 'Annulation' : 'Inactif'}
+                                    </span>
                                 </td>
                             </tr>
                         )

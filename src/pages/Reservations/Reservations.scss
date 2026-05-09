@@ -66,6 +66,47 @@
     }
   }
 
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.2rem;
+    color: #aaa;
+    cursor: pointer;
+    margin-left: 0.8rem;
+    padding-left: 1.2rem;
+    border-left: 1px solid #3c3c3c;
+    user-select: none;
+    input[type="checkbox"] {
+      appearance: none;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 0.4rem;
+      border: 1px solid #3c3c3c;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+      &:checked {
+        background: #00c76422;
+        border-color: #00c76444;
+        position: relative;
+        &::after {
+          content: '✓';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: #00c764;
+          font-size: 1.1rem;
+        }
+      }
+    }
+    &:hover {
+      color: #f8f8f8;
+    }
+  }
+
   &__table-wrap {
     background: #1a1a1a;
     border: 1px solid #2e2e2e;

@@ -282,4 +282,19 @@
       color: #f59e0b;
     }
   }
+
+  &__sessions-input {
+    width: 2rem;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-align: center;
+    outline: none;
+    padding: 0;
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button { -webkit-appearance: none; }
+  }
 }

@@ -24,19 +24,29 @@
       "electron/**/*",
       "icons/**"
     ],
-    "directories": { "output": "release" },
+    "directories": {
+      "output": "release"
+    },
     "linux": {
-      "target": ["deb"],
+      "target": [
+        "deb"
+      ],
       "icon": "icons/icons/png"
     },
     "win": {
       "target": "nsis",
       "icon": "icons/icons/png/icon.ico"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "wilfloupblanc",
+      "repo": "elsass-admin-app"
     }
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "electron-store": "^8.2.0",
+    "electron-updater": "^6.8.3",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-redux": "^9.2.0",
