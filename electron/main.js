@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
-const Store = require('electron-store')
+const store = require('electron-store')
 const { autoUpdater } = require('electron-updater')
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -48,7 +48,6 @@ function createWindow() {
         win.loadFile(path.join(__dirname, '../dist/index.html'))
     }
 
-    // 👈 ajout : events updater → envoyés au renderer
     autoUpdater.on('update-available', () => {
         win.webContents.send('update-available')
     })

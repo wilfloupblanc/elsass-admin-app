@@ -40,7 +40,8 @@
     "publish": {
       "provider": "github",
       "owner": "wilfloupblanc",
-      "repo": "elsass-admin-app"
+      "repo": "elsass-admin-app",
+      "releaseType": "release"
     }
   },
   "dependencies": {
