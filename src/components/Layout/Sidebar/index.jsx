@@ -2,10 +2,12 @@ import "./Sidebar.scss"
 import { NavLink } from "react-router"
 import { PageColors } from "../../PageColors"
 import {useGetMaintenanceStatusQuery, useToggleMaintenanceMutation} from "../../../store/ApiSlice/adminApiSlice";
+import {useState} from "react";
 
 export const Sidebar = ({ className }) => {
     const { data } = useGetMaintenanceStatusQuery()
     const [toggleMaintenance, { data: toggleData }] = useToggleMaintenanceMutation()
+    const [showConfirm, setShowConfirm] = useState(false)
 
     const isMaintenance = toggleData?.maintenance ?? data?.maintenance ?? false
 
@@ -76,12 +78,30 @@ export const Sidebar = ({ className }) => {
                 </NavLink>
                 <button
                     className={`layout__sidebar__maintenance ${isMaintenance ? "layout__sidebar__maintenance--active" : ""}`}
-                    onClick={() => toggleMaintenance()}
+                    onClick={() => setShowConfirm(true)}
                 >
                     <div style={{ background: isMaintenance ? "#ef4444" : "#22c55e" }} />
                     <h3>{isMaintenance ? "Maintenance ON" : "Maintenance OFF"}</h3>
                 </button>
             </section>
+
+            {showConfirm && (
+                <div className="layout__sidebar__overlay" onClick={() => setShowConfirm(false)}>
+                    <div className="layout__sidebar__confirm" onClick={e => e.stopPropagation()}>
+                        <h3>{isMaintenance ? 'Désactiver la maintenance ?' : 'Activer la maintenance ?'}</h3>
+                        <p>{isMaintenance ? 'Le site sera à nouveau accessible aux clients.' : 'Le site sera inaccessible aux clients.'}</p>
+                        <div className="layout__sidebar__confirm-actions">
+                            <button onClick={() => setShowConfirm(false)}>Annuler</button>
+                            <button
+                                className="confirm"
+                                onClick={() => { toggleMaintenance(); setShowConfirm(false) }}
+                            >
+                                Confirmer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </aside>
     )
 }
