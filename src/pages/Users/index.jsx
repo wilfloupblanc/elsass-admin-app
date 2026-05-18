@@ -14,7 +14,7 @@ export const Users = () => {
     const subscriptions = subscriptionsData?.subscriptions ?? []
 
     const getUserSubscription = (userId) => {
-        return subscriptions.find(s => s.user_id == userId && s.status === 'active')
+        return subscriptions.find(s => s.user_id == userId && (s.status === 'active' || s.status === 'pending_cancellation'))
     }
 
     const filteredUsers = users

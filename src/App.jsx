@@ -11,6 +11,7 @@ import {Subscriptions} from "./pages/Subscriptions";
 import {useGetAuthUserQuery} from "./store/ApiSlice/adminApiSlice";
 import {Login} from "./pages/Login";
 import {Events} from "./pages/Events";
+import {DiscountCodes} from "./pages/DiscountCodes";
 
 function App() {
     const { data: authUser, isLoading } = useGetAuthUserQuery()
@@ -35,6 +36,7 @@ function App() {
                         <Route path="/giftVouchers" element={<GiftVouchers />} />
                         <Route path="/subscriptions" element={<Subscriptions />} />
                         <Route path="/events" element={<Events />} />
+                        <Route path="/discount-code" element={<DiscountCodes />} />
                         <Route path="/scan" element={<Scan />} />
                     </Routes>
                 </Layout> : <Navigate to="/login" />

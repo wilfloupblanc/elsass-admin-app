@@ -67,6 +67,13 @@ export const Sidebar = ({ className }) => {
                     <div style={{ background: PageColors.events }} />
                     <h3>Evénements</h3>
                 </NavLink>
+                <NavLink to="/discount-code" style={({isActive}) => ({
+                    color: isActive ? PageColors.discountCodes : '',
+                    background: isActive ? `${PageColors.discountCodes}22` : 'transparent',
+                })}>
+                    <div style={{ background: PageColors.discountCodes}} />
+                    <h3>Codes de Réduction</h3>
+                </NavLink>
             </section>
             <section className="layout__sidebar__tools">
                 <NavLink to="/scan" style={({ isActive }) => ({

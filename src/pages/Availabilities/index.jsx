@@ -37,6 +37,9 @@ const DAY_LABELS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
 export const Availabilities = () => {
     const [weekStart, setWeekStart] = useState(getMonday(new Date()))
     const [showModal, setShowModal] = useState(false)
+    const [selectedCells, setSelectedCells] = useState(new Set())
+    const [isSelecting, setIsSelecting] = useState(false)
+    const [defaultSlotsTotal, setDefaultSlotsTotal] = useState(6)
     const [newSlot, setNewSlot] = useState({
         date: '',
         start_time: '',
@@ -95,6 +98,40 @@ export const Availabilities = () => {
         const lastStr = last.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
         return `${firstStr} — ${lastStr}`
     }, [weekDays])
+
+    const handleEmptyCellClick = useCallback(async (day, time) => {
+        if (isSelecting) {
+            const key = `${formatDate(day)}-${time}`
+            setSelectedCells(prev => {
+                const next = new Set(prev)
+                next.has(key) ? next.delete(key) : next.add(key)
+                return next
+            })
+        } else {
+            await createAvailability({
+                date: formatDate(day),
+                start_time: time,
+                slots_total: defaultSlotsTotal,
+                slots_remaining: defaultSlotsTotal,
+                is_open: true
+            })
+        }
+    }, [isSelecting, createAvailability, defaultSlotsTotal])
+
+    const handleBulkCreate = useCallback(async () => {
+        for (const key of selectedCells) {
+            const [yyyy, mm, dd, time] = key.split('-')
+            await createAvailability({
+                date: `${yyyy}-${mm}-${dd}`,
+                start_time: time,
+                slots_total: defaultSlotsTotal,
+                slots_remaining: defaultSlotsTotal,
+                is_open: true
+            })
+        }
+        setSelectedCells(new Set())
+        setIsSelecting(false)
+    }, [selectedCells, createAvailability, defaultSlotsTotal])
 
     const prevWeek = useCallback(() => {
         const d = new Date(weekStart)
@@ -159,9 +196,36 @@ export const Availabilities = () => {
                         <span className="availabilities__week-label">{getWeekLabel}</span>
                         <button className="availabilities__week-btn" onClick={nextWeek}>→</button>
                     </div>
-                    <button className="availabilities__add-btn" onClick={() => setShowModal(true)}>
-                        + Nouveau créneau
-                    </button>
+                    <div className="availabilities__bulk-controls">
+                        <label className="availabilities__slots-label">
+                            Places par défaut :
+                            <input
+                                type="number"
+                                min="1"
+                                max="10"
+                                value={defaultSlotsTotal}
+                                onChange={e => setDefaultSlotsTotal(Number(e.target.value))}
+                                className="availabilities__slots-input"
+                            />
+                        </label>
+                        <button
+                            className={`availabilities__select-btn ${isSelecting ? 'active' : ''}`}
+                            onClick={() => {
+                                setIsSelecting(!isSelecting)
+                                setSelectedCells(new Set())
+                            }}
+                        >
+                            {isSelecting ? `${selectedCells.size} créneau(x) sélectionné(s)` : 'Sélection multiple'}
+                        </button>
+                        {isSelecting && selectedCells.size > 0 &&
+                            <button className="availabilities__bulk-btn" onClick={handleBulkCreate}>
+                                Créer {selectedCells.size} créneau(x)
+                            </button>
+                        }
+                        <button className="availabilities__add-btn" onClick={() => setShowModal(true)}>
+                            + Nouveau créneau
+                        </button>
+                    </div>
                 </div>
             </article>
 
@@ -201,8 +265,15 @@ export const Availabilities = () => {
                                     const dayAvailabilities = availabilitiesByDay[formatDate(day)] ?? []
                                     const slot = getSlotForTime(dayAvailabilities, time)
                                     return (
-                                        <div key={`cell-${i}-${time}`} className="availabilities__cell">
-                                            {slot && (
+                                        <div
+                                            key={`cell-${i}-${time}`}
+                                            className={`availabilities__cell ${
+                                                !slot && isSelecting && selectedCells.has(`${formatDate(day)}-${time}`)
+                                                    ? 'availabilities__cell--selected'
+                                                    : ''
+                                            }`}
+                                        >
+                                            {slot ? (
                                                 <div
                                                     className={`availabilities__slot ${getSlotClass(slot, day)}`}
                                                     onClick={() => handleToggleOpen(slot)}
@@ -233,6 +304,11 @@ export const Availabilities = () => {
                                                         ×
                                                     </button>
                                                 </div>
+                                            ) : (
+                                                <div
+                                                    className={`availabilities__cell-empty ${isSelecting ? 'availabilities__cell-empty--selectable' : ''}`}
+                                                    onClick={() => handleEmptyCellClick(day, time)}
+                                                />
                                             )}
                                         </div>
                                     )

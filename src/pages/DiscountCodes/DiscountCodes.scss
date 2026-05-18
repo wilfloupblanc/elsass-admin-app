@@ -1,0 +1,230 @@
+.discount-codes {
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  height: 100%;
+  overflow: hidden;
+
+  &__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 2.4rem;
+    font-weight: 600;
+  }
+
+  &__add-btn {
+    font-size: 1.2rem;
+    padding: 0.6rem 1.4rem;
+    border-radius: 2rem;
+    border: 1px solid #3c3c3c;
+    background: #da750122;
+    color: #da7501;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s;
+
+    &:hover {
+      background: #da750133;
+    }
+  }
+
+  &__table-wrap {
+    flex: 1;
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1rem;
+    overflow-y: auto;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.3rem;
+
+    thead tr {
+      border-bottom: 1px solid #2e2e2e;
+      position: sticky;
+      top: 0;
+      background: #1a1a1a;
+      z-index: 1;
+    }
+
+    th {
+      padding: 1rem 1.4rem;
+      text-align: left;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #666;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      padding: 1rem 1.4rem;
+      color: #f8f8f8;
+      border-bottom: 1px solid #2e2e2e;
+    }
+
+    tbody tr {
+      &:last-child td { border-bottom: none; }
+      &:hover td { background: #242424; }
+    }
+  }
+
+  &__code {
+    font-family: monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #da7501;
+    background: #da750122;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.4rem;
+  }
+
+  &__status {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+
+    &--active {
+      background: #00c76422;
+      color: #00c764;
+    }
+
+    &--inactive {
+      background: #ffffff11;
+      color: #888;
+    }
+  }
+
+  &__delete-btn {
+    background: transparent;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    font-size: 1.8rem;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #ff4d4d;
+    }
+  }
+
+  &__modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: #00000088;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  &__modal {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 1.2rem;
+    padding: 3rem;
+    width: 48rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__modal-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #f8f8f8;
+  }
+
+  &__modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  &__modal-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  &__modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    label {
+      font-size: 1.2rem;
+      color: #aaa;
+      font-weight: 500;
+
+      span {
+        color: #555;
+        font-weight: 400;
+      }
+    }
+
+    input, select {
+      background: #242424;
+      border: 1px solid #3c3c3c;
+      border-radius: 0.8rem;
+      padding: 1rem 1.4rem;
+      font-size: 1.4rem;
+      color: #f8f8f8;
+      outline: none;
+      transition: border-color 0.15s;
+
+      &:focus {
+        border-color: #da7501;
+      }
+
+      option {
+        background: #242424;
+      }
+    }
+  }
+
+  &__modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+
+  &__modal-cancel {
+    font-size: 1.3rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 0.8rem;
+    border: 1px solid #3c3c3c;
+    background: transparent;
+    color: #aaa;
+    cursor: pointer;
+
+    &:hover {
+      background: #2e2e2e;
+    }
+  }
+
+  &__modal-submit {
+    font-size: 1.3rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 0.8rem;
+    border: none;
+    background: #da7501;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s;
+
+    &:hover {
+      background: #c46a01;
+    }
+  }
+}

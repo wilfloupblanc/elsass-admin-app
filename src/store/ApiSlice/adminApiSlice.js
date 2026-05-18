@@ -189,6 +189,25 @@ export const adminApiSlice = createApi({
             }),
             invalidatesTags: ['admin'],
         }),
+        getDiscountCodes: build.query({
+            query: () => '/discount-code/',
+            providesTags: ['admin'],
+        }),
+        createDiscountCode: build.mutation({
+            query: (body) => ({
+                url: '/discount-code/',
+                method: 'POST',
+                body
+            }),
+            invalidatesTags: ['admin'],
+        }),
+        deleteDiscountCode: build.mutation({
+            query: (id) => ({
+                url: `/discount-code/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['admin'],
+        }),
     })
 })
 
@@ -221,5 +240,8 @@ export const {
     useGetMaintenanceStatusQuery,
     useUpdateSubscriptionSessionsMutation,
     useAdminCancelBookingMutation,
-    useAdminRestoreBookingMutation
+    useAdminRestoreBookingMutation,
+    useGetDiscountCodesQuery,
+    useCreateDiscountCodeMutation,
+    useDeleteDiscountCodeMutation,
 } = adminApiSlice

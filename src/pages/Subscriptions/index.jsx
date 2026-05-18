@@ -43,19 +43,17 @@ export const Subscriptions = () => {
         })
         .sort((a, b) => new Date(b.current_period_start) - new Date(a.current_period_start))
 
-    const activeSubs = subscriptions.filter(s => s.status === 'active')
-
     const stats = {
-        active: activeSubs.length,
-        sessionUsed: subscriptions
+        active: subscriptions.filter(s => s.status === 'active' || s.status === 'pending_cancellation').length,
+        revenue: subscriptions
             .filter(s => s.status === 'active' || s.status === 'pending_cancellation')
-            .reduce((acc, s) => acc + (s.monthly_free_session_used ? 1 : 0), 0),
+            .reduce((acc, s) => acc + (s.price ?? 0), 0),
         sessionAvailable: subscriptions
             .filter(s => s.status === 'active' || s.status === 'pending_cancellation')
             .reduce((acc, s) => acc + (s.free_sessions_remaining ?? 0), 0),
-        starter: activeSubs.filter(s => s.plan === 'STARTER').length,
-        plus: activeSubs.filter(s => s.plan === 'PLUS').length,
-        ultra: activeSubs.filter(s => s.plan === 'ULTRA').length,
+        starter: subscriptions.filter(s => (s.status === 'active' || s.status === 'pending_cancellation') && s.plan === 'STARTER').length,
+        plus: subscriptions.filter(s => (s.status === 'active' || s.status === 'pending_cancellation') && s.plan === 'PLUS').length,
+        ultra: subscriptions.filter(s => (s.status === 'active' || s.status === 'pending_cancellation') && s.plan === 'ULTRA').length,
     }
 
     const getPlanClass = (plan) => {
@@ -107,8 +105,8 @@ export const Subscriptions = () => {
                     <span className="subscriptions__stat-value">{stats.active}</span>
                 </div>
                 <div className="subscriptions__stat">
-                    <span className="subscriptions__stat-label">Sessions utilisées (période en cours)</span>
-                    <span className="subscriptions__stat-value">{stats.sessionUsed}</span>
+                    <span className="subscriptions__stat-label">Revenus abonnements (période en cours)</span>
+                    <span className="subscriptions__stat-value">{stats.revenue.toFixed(2)} €</span>
                     <span className="subscriptions__stat-sub">Sur {stats.active} membres actifs</span>
                 </div>
                 <div className="subscriptions__stat">

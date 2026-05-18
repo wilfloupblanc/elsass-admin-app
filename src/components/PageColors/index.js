@@ -7,5 +7,6 @@ export const PageColors = {
     giftVouchers: '#ff7e70',
     subscriptions: '#e8b4d0',
     events: '#245E97',
+    discountCodes: '#f59e0b',
     scanner: '#e27a53'
 }

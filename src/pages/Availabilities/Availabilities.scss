@@ -375,4 +375,102 @@
       background: #c46a01;
     }
   }
+
+  &__bulk-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  &__slots-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.2rem;
+    color: #aaa;
+    font-weight: 500;
+  }
+
+  &__slots-input {
+    width: 4rem;
+    background: #242424;
+    border: 1px solid #3c3c3c;
+    border-radius: 0.6rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 1.2rem;
+    color: #f8f8f8;
+    text-align: center;
+    outline: none;
+
+    &:focus {
+      border-color: #da7501;
+    }
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      opacity: 1;
+    }
+  }
+
+  &__select-btn {
+    font-size: 1.2rem;
+    padding: 0.6rem 1.4rem;
+    border-radius: 2rem;
+    border: 1px solid #3c3c3c;
+    background: transparent;
+    color: #aaa;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+
+    &:hover {
+      background: #2e2e2e;
+    }
+
+    &.active {
+      background: #00b2ff22;
+      color: #00b2ff;
+      border-color: #00b2ff44;
+    }
+  }
+
+  &__bulk-btn {
+    font-size: 1.2rem;
+    padding: 0.6rem 1.4rem;
+    border-radius: 2rem;
+    border: none;
+    background: #00c76422;
+    color: #00c764;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.15s;
+
+    &:hover {
+      background: #00c76433;
+    }
+  }
+
+  &__cell--selected {
+    background: #00b2ff18;
+    border-bottom: 1px solid #00b2ff33;
+
+    &:hover {
+      background: #00b2ff22;
+    }
+  }
+
+  &__cell-empty {
+    width: 100%;
+    height: 100%;
+
+    &--selectable {
+      cursor: pointer;
+
+      &:hover {
+        background: #00b2ff11;
+      }
+    }
+  }
 }
