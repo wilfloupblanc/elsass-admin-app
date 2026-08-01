@@ -2,7 +2,7 @@
   "name": "elsass-admin",
   "description": "Elsass SimRacing Admin Panel",
   "private": true,
-  "version": "1.0.13",
+  "version": "1.0.14",
   "author": {
     "name": "Julien Zaug",
     "email": "zaugjulien@gmail.com"
