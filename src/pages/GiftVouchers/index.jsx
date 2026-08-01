@@ -4,6 +4,7 @@ import {
     useGetGiftVouchersQuery,
     useGetUsersQuery,
     useGetSessionsQuery,
+    useUpdateGiftVoucherMutation,
 } from '../../store/ApiSlice/adminApiSlice'
 
 export const GiftVouchers = () => {
@@ -13,6 +14,7 @@ export const GiftVouchers = () => {
     const { data: giftVouchersData } = useGetGiftVouchersQuery()
     const { data: usersData } = useGetUsersQuery()
     const { data: sessionsData } = useGetSessionsQuery()
+    const [updateGiftVoucher] = useUpdateGiftVoucherMutation()
 
     const giftVouchers = giftVouchersData?.giftvouchers ?? []
     const users = usersData?.users ?? []
@@ -39,6 +41,14 @@ export const GiftVouchers = () => {
             case 'free_member': return 'gift-vouchers__status--member'
             default: return ''
         }
+    }
+
+    const handleStatusChange = async (id, newStatus) => {
+        await updateGiftVoucher({
+            id,
+            status: newStatus,
+            used_at: newStatus === 'used' ? new Date().toISOString() : null
+        })
     }
 
     const filteredVouchers = giftVouchers
@@ -122,9 +132,14 @@ export const GiftVouchers = () => {
                                 <td>{formatDate(gv.expires_at)}</td>
                                 <td>{formatDate(gv.used_at)}</td>
                                 <td>
-                                        <span className={`gift-vouchers__status ${getStatusClass(gv.status)}`}>
-                                            {getStatusLabel(gv.status)}
-                                        </span>
+                                    <select
+                                        className={`gift-vouchers__status ${getStatusClass(gv.status)}`}
+                                        value={gv.status}
+                                        onChange={(e) => handleStatusChange(gv.id, e.target.value)}
+                                    >
+                                        <option value="valid">Actif</option>
+                                        <option value="used">Utilisé</option>
+                                    </select>
                                 </td>
                             </tr>
                         )
