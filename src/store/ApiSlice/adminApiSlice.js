@@ -52,6 +52,13 @@ export const adminApiSlice = createApi({
             query: () => '/giftVoucher/',
             providesTags: ["admin"],
         }),
+        validateGiftVoucher: build.mutation({
+            query: (code) => ({
+                url: `/giftVoucher/validate/${code}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['admin'],
+        }),
         getSimulators: build.query({
             query: () => '/simulator/',
             providesTags: ["admin"],
@@ -216,6 +223,7 @@ export const {
     useGetUsersQuery,
     useGetPaymentsQuery,
     useGetGiftVouchersQuery,
+    useValidateGiftVoucherMutation,
     useGetSimulatorsQuery,
     useUpdateSimulatorMutation,
     useUpdateBookingMutation,

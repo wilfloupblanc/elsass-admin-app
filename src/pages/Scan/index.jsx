@@ -1,12 +1,14 @@
 import './Scan.scss'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useGetBookingsQuery, useGetUsersQuery, useCheckInBookingMutation, useValidateFreeSessionTokenMutation } from '../../store/ApiSlice/adminApiSlice'
+import { useGetBookingsQuery, useGetUsersQuery, useCheckInBookingMutation, useValidateFreeSessionTokenMutation, useValidateGiftVoucherMutation } from '../../store/ApiSlice/adminApiSlice'
 
 export const Scan = () => {
     const [scannedId, setScannedId] = useState(null)
     const [scannedToken, setScannedToken] = useState(null)
     const [scannedType, setScannedType] = useState(null) // 'booking' | 'freeSession'
     const [freeSessionResult, setFreeSessionResult] = useState(null)
+    const [giftVoucherCode, setGiftVoucherCode] = useState(null)
+    const [giftVoucherResult, setGiftVoucherResult] = useState(null)
     const [history, setHistory] = useState([])
     const [buffer, setBuffer] = useState('')
     const [lastKeyTime, setLastKeyTime] = useState(0)
@@ -16,6 +18,7 @@ export const Scan = () => {
     const { data: usersData } = useGetUsersQuery()
     const [checkIn] = useCheckInBookingMutation()
     const [validateFreeSessionToken] = useValidateFreeSessionTokenMutation()
+    const [validateGiftVoucher] = useValidateGiftVoucherMutation()
 
     const bookings = bookingsData?.bookings ?? []
     const users = usersData?.users ?? []
@@ -57,11 +60,19 @@ export const Scan = () => {
             setScannedType('freeSession')
             setScannedToken(value)
             setScannedId(null)
+            setGiftVoucherCode(null)
             setFreeSessionResult(null)
+        } else if (value.includes('-')) {
+            setScannedType('giftVoucher')
+            setGiftVoucherCode(value)
+            setScannedId(null)
+            setScannedToken(null)
+            setGiftVoucherResult(null)
         } else {
             setScannedType('booking')
             setScannedId(value)
             setScannedToken(null)
+            setGiftVoucherCode(null)
             setFreeSessionResult(null)
         }
     }, [])
@@ -96,6 +107,25 @@ export const Scan = () => {
     }, [scannedToken, scannedType])
 
     useEffect(() => {
+        if (!giftVoucherCode || scannedType !== 'giftVoucher') return
+
+        const doValidate = async () => {
+            try {
+                const result = await validateGiftVoucher(giftVoucherCode).unwrap()
+                setGiftVoucherResult({ valid: true, ...result })
+            } catch (error) {
+                setGiftVoucherResult({
+                    valid: false,
+                    reason: error?.data?.reason ?? 'Bon cadeau invalide',
+                    used_at: error?.data?.used_at ?? null
+                })
+            }
+        }
+
+        doValidate()
+    }, [giftVoucherCode, scannedType])
+
+    useEffect(() => {
         if (!scannedId || !booking || !user) return
         setHistory(prev => [{
             id: scannedId,
@@ -112,6 +142,15 @@ export const Scan = () => {
             type: 'freeSession'
         }, ...prev].slice(0, 5))
     }, [freeSessionResult])
+
+    useEffect(() => {
+        if (!giftVoucherResult?.valid) return
+        setHistory(prev => [{
+            id: giftVoucherCode.slice(0, 10) + '...',
+            name: giftVoucherResult.giftvoucher.recipient_name,
+            type: 'giftVoucher'
+        }, ...prev].slice(0, 5))
+    }, [giftVoucherResult])
 
     useEffect(() => {
         ghostRef.current?.focus()
@@ -305,6 +344,43 @@ export const Scan = () => {
                         )}
                     </div>
                 )}
+
+                {/* RÉSULTAT BON CADEAU */}
+                {scannedType === 'giftVoucher' && giftVoucherCode && (
+                    <div className="scan__result">
+                        {giftVoucherResult === null ? (
+                            <div className="scan__waiting-label">Validation en cours...</div>
+                        ) : giftVoucherResult.valid ? (
+                            <>
+                                <div className="scan__status scan__status--confirmed">
+                                    <span className="scan__status-dot" />
+                                    Bon cadeau validé
+                                </div>
+                                <h2 className="scan__pilot-name">
+                                    {giftVoucherResult.giftvoucher.recipient_name}
+                                </h2>
+                                <div className="scan__divider" />
+                                <div className="scan__info-grid">
+                                    <div className="scan__info-item">
+                                        <span className="scan__info-label">Email</span>
+                                        <span className="scan__info-value">{giftVoucherResult.giftvoucher.recipient_email}</span>
+                                    </div>
+                                    <div className="scan__info-item">
+                                        <span className="scan__info-label">Session</span>
+                                        <span className="scan__info-value">{giftVoucherResult.session?.duration_minutes} minutes</span>
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="scan__not-found">
+                                {giftVoucherResult.reason}
+                                {giftVoucherResult.used_at && (
+                                    <span> — utilisé le {new Date(giftVoucherResult.used_at).toLocaleString('fr-FR')}</span>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
             </article>
 
             {history.length > 0 && (
@@ -315,7 +391,7 @@ export const Scan = () => {
                             <span className="scan__history-dot" />
                             <span className="scan__history-name">{h.name}</span>
                             <span className="scan__history-detail">
-                                {h.type === 'freeSession' ? 'Session gratuite' : `#${h.id}`}
+                                {h.type === 'freeSession' ? 'Session gratuite' : h.type === 'giftVoucher' ? 'Bon cadeau' : `#${h.id}`}
                             </span>
                         </div>
                     ))}
